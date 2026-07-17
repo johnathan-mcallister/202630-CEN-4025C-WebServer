@@ -1,39 +1,27 @@
-<%@ page language="java" contentType="text/html; ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<% if (session.getAttribute("userId") != null) { response.sendRedirect("tasks"); return; } %>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>ToDo App</title>
-</head>
+<head><meta charset="UTF-8"><title>Todo Login</title></head>
 <body>
-<h1>ToDo App</h1>
-<form name="myForm" action="results.jsp" method="post">
-    <table>
-        <tr>
-            <td>First Name:</td>
-            <td><input type="text" name="fName" size="50"/></td>
-        </tr>
-        <tr>
-            <td>Last Name:</td>
-            <td><input type="text" name="lName" size="50"/></td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><input type="text" name="email" size="50"/></td>
-        </tr>
-        <tr>
-            <fieldset>
-                <legend>Gender</legend>
+<h1>Todo App</h1>
+<% if (request.getParameter("error") != null) { %><p style="color:red">Invalid email or password.</p><% } %>
+<% if (request.getParameter("created") != null) { %><p>Account created. Please log in.</p><% } %>
 
-                <input type="radio" id="male" name="gender" value="Male">
-                <label for="male">Male</label><br>
+<h2>Log in</h2>
+<form action="login" method="post">
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
+    <button type="submit">Log in</button>
+</form>
 
-                <input type="radio" id="female" name="gender" value="Female">
-                <label for="female">Female</label><br>
-            </fieldset>
-        </tr>
-    </table>
-    <button type="submit" onclick="">Submit</button>
+<h2>Create account</h2>
+<form action="register" method="post">
+    <label>First name: <input name="firstName" required></label><br>
+    <label>Last name: <input name="lastName" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Password: <input type="password" name="password" minlength="6" required></label><br>
+    <button type="submit">Create account</button>
 </form>
 </body>
 </html>

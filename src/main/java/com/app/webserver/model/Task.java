@@ -50,6 +50,9 @@ public class Task {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Title is required.");
+        }
         this.title = title;
     }
 
@@ -58,8 +61,7 @@ public class Task {
     }
 
     public void setPriority(Integer priority) {
-
-        if (priority < 1 || priority > 10) {
+        if (priority == null || priority < 1 || priority > 10) {
             throw new IllegalArgumentException("Priority must be between 1 and 10.");
         }
 

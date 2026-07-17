@@ -12,7 +12,7 @@ import java.util.UUID;
 import static com.app.webserver.util.PassUtil.hash;
 
 @Entity
-@Table(name = "users", schema = "app")
+@Table(name = "users", schema = "app", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
     @Id
     @UuidGenerator
@@ -72,7 +72,7 @@ public class User {
             throw new IllegalArgumentException("Invalid email format.");
         }
 
-        this.email = email;
+        this.email = email.trim().toLowerCase();
     }
 
     public String getPassword() {
@@ -80,6 +80,9 @@ public class User {
     }
 
     public void setPassword(String pswd) {
+        if (pswd == null || pswd.length() < 6) {
+            throw new IllegalArgumentException("Password must be at least 6 characters.");
+        }
         this.password = hash(pswd);
     }
 
