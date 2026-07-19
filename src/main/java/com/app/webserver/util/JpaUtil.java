@@ -19,14 +19,48 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class JpaUtil {
 
-    private static final EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("default");
+    private static final EntityManagerFactory emf = createFactory();
+
+    private static EntityManagerFactory createFactory() {
+        Map<String, String> settings = new HashMap<>();
+        putIfSet(settings, "jakarta.persistence.jdbc.url", "TODO_DB_URL", "todo.db.url");
+        putIfSet(settings, "jakarta.persistence.jdbc.user", "TODO_DB_USER", "todo.db.user");
+        putIfSet(settings, "jakarta.persistence.jdbc.password", "TODO_DB_PASSWORD", "todo.db.password");
+        putDecodedPasswordIfSet(settings);
+        return Persistence.createEntityManagerFactory("default", settings);
+    }
+
+    private static void putDecodedPasswordIfSet(Map<String, String> settings) {
+        String encoded = System.getenv("TODO_DB_PASSWORD_BASE64");
+        if (encoded == null || encoded.isBlank()) {
+            encoded = System.getProperty("todo.db.password.base64");
+        }
+        if (encoded != null && !encoded.isBlank()) {
+            String password = new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
+            settings.put("jakarta.persistence.jdbc.password", password);
+        }
+    }
+
+    private static void putIfSet(Map<String, String> settings, String property,
+                                 String environmentName, String systemPropertyName) {
+        String value = System.getenv(environmentName);
+        if (value == null || value.isBlank()) {
+            value = System.getProperty(systemPropertyName);
+        }
+        if (value != null && !value.isBlank()) {
+            settings.put(property, value);
+        }
+    }
 
     private JpaUtil() {
         // Utility class
