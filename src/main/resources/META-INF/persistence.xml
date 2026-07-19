@@ -8,10 +8,10 @@
         <class>com.app.webserver.model.User</class>
         <class>com.app.webserver.model.Task</class>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/todo-app;INIT=CREATE SCHEMA IF NOT EXISTS app"/>
-            <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/app"/>
+            <property name="jakarta.persistence.jdbc.user" value="tomcat"/>
+            <property name="jakarta.persistence.jdbc.password" value="Pass@1234"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
