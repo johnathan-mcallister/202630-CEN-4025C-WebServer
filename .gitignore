@@ -1,4 +1,6 @@
 target/
+jmeter/results.jtl
+jmeter/report/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
